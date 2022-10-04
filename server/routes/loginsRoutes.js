@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {give, registerValidationSchema, createUser, userLogin, verify, userLogout, userLoginAutomatically} = require("../controllers/authenticationControllers");
-
-router.get("/give", give);
+const {registerValidationSchema, createUser, userLogin, verify, userLogout, userLoginAutomatically} = require("../controllers/authenticationControllers");
 
 //* Login a user
 router.post("/sign-up", registerValidationSchema, createUser);
