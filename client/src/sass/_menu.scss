@@ -1,0 +1,278 @@
+@use "mixins" as mix;
+@use "colors" as c;
+
+.nav {
+	@include mix.flex;
+	position: fixed;
+	z-index: 2;
+	width: 90px;
+	height: 100%;
+	min-width: 90px;
+	max-width: 400px;
+	$this: &;
+	@include mix.trans(width, 0.1, ease);
+	background: map-get(c.$app-colors, "background");
+
+	&__button {
+		padding: 1rem;
+		border-radius: 1rem;
+		font-size: 2rem;
+	}
+
+	&__profile {
+		display: none;
+	}
+
+	&__img-cnt {
+		width: 100px;
+		height: 100px;
+		position: relative;
+		border-radius: 50%;
+		border: 3px dashed map-get(c.$app-colors, "primary");
+		padding: 0.3rem;
+		overflow: hidden;
+	}
+
+	&__img {
+		width: 100%;
+		height: 100%;
+		user-select: none;
+		border-radius: 50%;
+		cursor: pointer;
+		-webkit-user-drag: none;
+
+		&:hover + #{$this}__image-uploader-field {
+			opacity: 0.75;
+		}
+	}
+
+	&__image-uploader-field {
+		pointer-events: none;
+		text-align: center;
+		line-height: 100px;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		inset: 0;
+		font-size: 3rem;
+		color: white;
+		background: map-get(c.$app-colors, "focus");
+		opacity: 0;
+		@include mix.trans(opacity);
+	}
+
+	&__img-file-input {
+		width: 0;
+		height: 0;
+		cursor: pointer;
+		border-radius: 50%;
+		opacity: 0;
+		position: absolute;
+	}
+
+	&__name {
+		margin: 0 2rem;
+		@include mix.flex(flex-start);
+		flex-direction: column;
+		position: relative;
+		word-break: break-all;
+		text-align: center;
+	}
+
+	&__content {
+		flex-grow: 1;
+		overflow: hidden;
+		display: none;
+	}
+
+	&--opened {
+		height: 100%;
+		width: 35%;
+		min-width: 300px;
+		box-shadow: map-get(c.$app-colors, "shadow");
+		@include mix.flex(flex-start, flex-start);
+		flex-direction: column;
+
+		& .tab-link {
+			&--notification {
+				bottom: 0;
+				right: 50%;
+				translate: 50% 0;
+			}
+		}
+
+		#{$this}__profile {
+			@include mix.flex(flex-start, flex-start);
+			font-size: 2.2rem;
+			margin: 2rem;
+			padding: 1rem;
+			border-radius: 1.25rem;
+			color: map-get(c.$app-colors, "focus");
+		}
+
+		#{$this}__profile-options {
+			@include mix.flex;
+			z-index: 999;
+		}
+
+		#{$this}__content {
+			@include mix.flex(scretch, flex-start);
+			flex-direction: column;
+			width: 100%;
+		}
+	}
+
+	&__toggle {
+		@include mix.flex;
+		position: absolute;
+		top: 50%;
+		left: 100%;
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		z-index: 10;
+		background: map-get(c.$app-colors, "background");
+		box-shadow: map-get(c.$app-colors, "shadow");
+		border: none;
+		color: map-get(c.$app-colors, "gray");
+		font-size: 2.6rem;
+		transform-origin: center;
+		cursor: pointer;
+		transform: translate(-100%, -50%);
+		&--toggled {
+			box-shadow: map-get(c.$app-colors, "shadow");
+			transform: rotate(0.5turn) translate(50%, 50%);
+		}
+
+		&:hover {
+			color: map-get(c.$app-colors, "primary");
+		}
+	}
+}
+
+.user-name {
+	display: inline;
+
+	&--capital {
+		font-size: 4rem;
+		color: lighten(map-get(c.$app-colors, "gray"), 30);
+	}
+}
+
+.menu {
+	@include mix.flex;
+	flex-direction: column;
+	overflow: hidden;
+	border-radius: 22px;
+	list-style: none;
+	background: map-get(c.$app-colors, "background");
+	box-shadow: map-get(c.$app-colors, "shadow");
+	padding: 0.5rem;
+	$this: &;
+
+	&--opened {
+		@include mix.flex(flex-start);
+		flex-direction: row;
+		border-radius: 0;
+		transform-origin: left;
+		margin: 0;
+		width: 100%;
+		min-height: 75px;
+		box-shadow: 0 5px 6px 0 lighten(map-get(c.$app-colors, "lightGray"), 25);
+
+		#{$this}__item {
+			flex-grow: 1;
+		}
+	}
+
+	&__item {
+		width: 64px;
+		height: 64px;
+	}
+}
+
+.tab-link {
+	position: relative;
+	@include mix.flex;
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+	color: map-get(c.$app-colors, "gray");
+	padding: 1rem;
+	font-size: 2.7rem;
+	transition: background 0.35s 0s ease, color 0.2s 0s linear;
+	border-radius: 2rem;
+
+	@include mix.hoverEffect("light");
+	@include mix.clickEffect("light");
+
+	&:focus {
+		color: map-get(c.$app-colors, "primary");
+	}
+
+	&--active {
+		color: map-get(c.$app-colors, "primary");
+	}
+
+	&--notification {
+		position: absolute;
+		right: 0;
+		bottom: 50%;
+		translate: 0 50%;
+		display: block;
+		height: 12px;
+		width: 12px;
+		border-radius: 50%;
+		background: map-get(c.$app-colors, "primary");
+	}
+}
+
+@include mix.media(largeMobile) {
+	.menu {
+		display: none;
+		flex-direction: row;
+		width: 100%;
+
+		&--opened {
+			@include mix.flex(flex-start, center);
+		}
+
+		&__item {
+			flex-grow: 1;
+		}
+	}
+
+	.nav {
+		width: 100%;
+		max-width: 100%;
+		height: 100%;
+		background: transparent;
+		transform: translate(-100%, 0);
+		@include mix.trans(transform, 0.2);
+		$this: &;
+
+		&__toggle {
+			top: 0;
+			left: 100%;
+			margin: 3.5rem 6rem;
+			width: 42px;
+			height: 42px;
+			font-size: 3.2rem;
+			border-radius: 1rem;
+
+			&--toggled {
+				left: 0;
+				margin: 3.5rem;
+			}
+		}
+
+		&--opened {
+			background: map-get(c.$app-colors, "background");
+			transform: translate(0, 0);
+
+			#{$this}__profile {
+				margin: 2rem auto;
+			}
+		}
+	}
+} ;
