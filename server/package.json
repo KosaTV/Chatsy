@@ -4,7 +4,7 @@
 	"main": "app.js",
 	"license": "MIT",
 	"scripts": {
-		"server": "node app"
+		"start": "node app"
 	},
 	"dependencies": {
 		"bcrypt": "^5.0.1",
