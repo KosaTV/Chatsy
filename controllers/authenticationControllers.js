@@ -16,6 +16,11 @@ const generateAccessToken = user => {
 	});
 };
 
+const give = (req, res) => {
+	const users = User.findMany({});
+	res.send(JSON.stringify(users));
+};
+
 const generateRefreshToken = user => {
 	const secretKey = process.env.REFRESH_TOKEN_SECRET;
 
@@ -214,6 +219,7 @@ const createUser = async (req, res) => {
 };
 
 module.exports = {
+	give,
 	createUser,
 	userLogin,
 	userLoginAutomatically,
