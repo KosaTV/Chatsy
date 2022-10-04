@@ -36,21 +36,16 @@ const userLogin = async (req, res) => {
 		const {password, chatsyToken, ...userData} = userExists._doc;
 
 		const response = {
-			user: userData
+			user: userData,
+			token
 		};
 
 		userExists.chatsyToken = token;
 		try {
 			await userExists.save();
-
-			return res
-				.status(200)
-				.cookie("chatsy_token", token, {sameSite: "strict", path: "/", expires: new Date(new Date().getTime + 60000 * 1000), httpOnly: true})
-				.cookie("chatsy_refreshToken", refreshedToken, {sameSite: "strict", path: "/", expires: new Date(new Date().getTime + 1440000000 * 1000), httpOnly: true})
-				.send(response);
+			return res.status(200).send(response);
 		} catch (err) {
-			console.log(err);
-			res.status(404).send({error: "not found"});
+			return res.status(404).send({error: "not found"});
 		}
 	}
 
@@ -58,9 +53,7 @@ const userLogin = async (req, res) => {
 };
 
 const userLoginAutomatically = async (req, res) => {
-	if (!req.cookies) return;
-
-	const token = req.cookies.chatsy_token;
+	const token = req.body.token;
 
 	if (token) {
 		const payload = getPayloadFromToken(token);
@@ -94,7 +87,7 @@ const getPayloadFromToken = token => {
 };
 
 const verify = (req, res, next) => {
-	const token = req.cookies.chatsy_token;
+	const token = req.headers.authorization;
 
 	if (token) {
 		const payload = getPayloadFromToken(token);
@@ -151,7 +144,7 @@ const refreshTokenController = (req, res) => {
 };
 
 const userLogout = async (req, res) => {
-	refreshedTokens = refreshedTokens.filter(refreshToken => refreshToken !== req.cookies.chatsy_refreshToken);
+	refreshedTokens = refreshedTokens.filter(refreshToken => refreshToken !== req.headers.authorization);
 
 	const user = await User.findById(req.user.id);
 	user.chatsyToken = "";
