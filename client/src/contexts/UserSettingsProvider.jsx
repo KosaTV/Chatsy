@@ -66,12 +66,12 @@ function UserSettingsProvider({children}) {
 
 		try {
 			response = await handleServerData("POST", "/login", JSON.stringify(formData), false);
+			console.log("response: ", response);
 			if (!response.error) {
 				setIsOldUser("old");
 				return setUser({...response.user, accessToken: response.accessToken, refreshedToken: response.refreshedToken});
 			}
 
-			console.log("response: ", response);
 			return setUser(prev => {
 				return {...prev, error: response.error};
 			});
