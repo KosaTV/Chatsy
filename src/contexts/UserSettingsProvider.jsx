@@ -11,24 +11,28 @@ const useUserSettings = () => {
 function UserSettingsProvider({children}) {
 	const [user, setUser] = useState({waiting: true, error: false});
 	const [isOldUser, setIsOldUser] = useLocalStorage("session");
+	const [token, setToken] = useLocalStorage("chatsy-token");
 
 	const loginAutomatically = async () => {
 		let error = false;
-		const data = await handleServerData("GET", "/auto-login");
+		const data = await handleServerData("POST", "/auto-login", JSON.stringify({token}));
 		if (!data.error) return setUser(data.user);
 		if (isOldUser === "old") error = data.error.message ? data.error.message : data.error;
+
 		return setUser({waiting: false, error});
 	};
 
 	useEffect(() => {
-		loginAutomatically();
+		(async () => {
+			loginAutomatically();
+		})();
 	}, []);
 
 	const refreshToken = async () => {
 		const refreshedToken = JSON.stringify({refreshedToken: user.refreshedToken});
 		const data = await fetch("refresh", {
 			method: "POST",
-			headers: {Accept: "application/json", "Content-Type": "application/json", authorization: `Bearer ${user.accessToken}`},
+			headers: {Accept: "application/json", "Content-Type": "application/json", Authorization: `Bearer ${user.accessToken}`},
 			body: refreshedToken
 		});
 		return data;
@@ -40,21 +44,19 @@ function UserSettingsProvider({children}) {
 		return decodedToken.exp * 1000 < currentTime;
 	};
 
-	const handleServerData = async (method, endpoint, data = {}, checkToken = true) => {
+	const handleServerData = async (method, endpoint, data = "{}", checkToken = true) => {
+		const headers = {Accept: "application/json", "Content-Type": "application/json", Authorization: token};
 		const fullInfo = {
 			method,
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json"
-			},
+			headers,
 			credentials: "include",
-			body: data
+			body: JSON.stringify({...JSON.parse(data), chatsyToken: token})
 		};
 
 		const {body, ...getInfo} = fullInfo;
 		let finallObject = method === "POST" || method === "PUT" || method === "PATCH" ? fullInfo : getInfo;
 
-		const result = await fetch(`https://chatsyapp-server.herokuapp.com${endpoint}`, finallObject);
+		const result = await fetch(`http://localhost:5000${endpoint}`, finallObject);
 
 		const parsedResult = result.json();
 
@@ -63,14 +65,14 @@ function UserSettingsProvider({children}) {
 
 	const userLogin = async formData => {
 		let response;
-		console.log("response: ", JSON.stringify(formData));
 
 		try {
 			response = await handleServerData("POST", "/login", JSON.stringify(formData), false);
 
 			if (!response.error) {
 				setIsOldUser("old");
-				return setUser({...response.user, accessToken: response.accessToken, refreshedToken: response.refreshedToken});
+				setToken(response.token);
+				return setUser({...response.user});
 			}
 
 			return setUser(prev => {

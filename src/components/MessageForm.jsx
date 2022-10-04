@@ -198,7 +198,6 @@ function MessageForm(props) {
 
 		if ((type === "text" && messageInputValue) || type === "like") {
 			const value = messageInputRef.current.value;
-			console.log("🚀 ~ file: MessageForm.jsx ~ line 188 ~ sendMessage ~ value", value);
 
 			let message;
 			if (type === "text") message = createTextMessage(value);

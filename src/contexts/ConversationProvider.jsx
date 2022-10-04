@@ -181,7 +181,6 @@ function ConversationContextProvider({children}) {
 		});
 
 		peer.on("stream", stream => {
-			console.log("you called, your friend's stream:", stream);
 			friendCameraVideo.current.srcObject = stream;
 		});
 
@@ -222,7 +221,6 @@ function ConversationContextProvider({children}) {
 		});
 
 		peer.on("stream", stream => {
-			console.log("you answered, your friend's stream:", stream);
 			friendCameraVideo.current.srcObject = stream;
 		});
 
@@ -267,6 +265,7 @@ function ConversationContextProvider({children}) {
 
 		try {
 			const result = await userSettings.handleServerData("GET", `/groups/${id}`);
+
 			data = result;
 		} catch (err) {
 			console.log("Have not found", err);

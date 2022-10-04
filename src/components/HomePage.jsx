@@ -11,13 +11,13 @@ import {SocketProvider} from "../contexts/SocketProvider";
 import {useUserSettings} from "../contexts/UserSettingsProvider";
 import {SystemContextProvider} from "../contexts/SystemProvider";
 
-function HomePage(props) {
+function HomePage() {
 	const userSettings = useUserSettings();
 
 	return (
 		<>
 			{userSettings.user?._id ? (
-				<SocketProvider id={userSettings.user._id} accessToken={userSettings.user.accessToken}>
+				<SocketProvider id={userSettings.user._id}>
 					<ConversationContextProvider>
 						<SystemContextProvider>
 							<ChatRoom />
@@ -27,7 +27,7 @@ function HomePage(props) {
 			) : userSettings.user?.waiting ? (
 				""
 			) : (
-				<Form id={userSettings.ID} setID={userSettings.setID} />
+				<Form />
 			)}
 		</>
 	);
