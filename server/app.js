@@ -20,7 +20,7 @@ const userRouter = require("./routes/userRoutes");
 
 const app = express();
 
-app.use(cors({credentials: true, origin: "https://chatsyapp.netlify.app"}));
+app.use(cors({credentials: true, origin: "https://chatsyapp-client.herokuapp.com/"}));
 app.use(cookieParser());
 const mongoDbURI = process.env.DB_URI;
 
@@ -42,7 +42,7 @@ app.use(express.json({limit: "2mb"}));
 
 const io = require("socket.io")(server, {
 	cors: {
-		origin: ["https://chatsyapp.netlify.app"]
+		origin: ["https://chatsyapp-client.herokuapp.com/"]
 	}
 });
 
