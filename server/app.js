@@ -20,7 +20,7 @@ const userRouter = require("./routes/userRoutes");
 const app = express();
 
 app.use(cors({credentials: true, origin: process.env.BASE_URL}));
-const mongoDbURI = process.env.DB_OLD_URI;
+const mongoDbURI = process.env.DB_URI;
 
 const server = http.createServer(app);
 
