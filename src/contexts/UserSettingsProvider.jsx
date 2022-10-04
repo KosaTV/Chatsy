@@ -63,10 +63,11 @@ function UserSettingsProvider({children}) {
 
 	const userLogin = async formData => {
 		let response;
+		console.log("response: ", JSON.stringify(formData));
 
 		try {
 			response = await handleServerData("POST", "/login", JSON.stringify(formData), false);
-			console.log("response: ", response);
+
 			if (!response.error) {
 				setIsOldUser("old");
 				return setUser({...response.user, accessToken: response.accessToken, refreshedToken: response.refreshedToken});
