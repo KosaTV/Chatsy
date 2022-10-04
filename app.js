@@ -5,7 +5,6 @@ const cors = require("cors");
 const http = require("http");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const proxy = require("http-proxy-middleware");
 
 //* --- Controllers ---
 const {verifySocket} = require("./controllers/authenticationControllers");
@@ -20,18 +19,6 @@ const userRouter = require("./routes/userRoutes");
 //* --- App ---
 
 const app = express();
-
-let options = {
-	target: "https://chatsyapp-server.herokuapp.com",
-	changeOrigin: true,
-	logLevel: "debug",
-	onError: (err, req, res) => {
-		console.log("Something went wrong with the proxy middleware.", err);
-		res.end();
-	}
-};
-
-app.use("/api", proxy(options));
 
 app.use(cors({credentials: true, origin: "https://chatsyapp.netlify.app"}));
 app.use(cookieParser());
