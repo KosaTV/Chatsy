@@ -20,13 +20,11 @@ const userRouter = require("./routes/userRoutes");
 
 const app = express();
 
-app.use(cors({credentials: true, origin: "https://chatsyapp-client.herokuapp.com"}));
+app.use(cors({credentials: true, origin: "*"}));
 app.use(cookieParser());
 const mongoDbURI = process.env.DB_URI;
 
 const server = http.createServer(app);
-
-const PORT = process.env.PORT || 8080;
 
 mongoose
 	.connect(mongoDbURI, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -37,12 +35,14 @@ mongoose
 	})
 	.catch(err => console.log(`something went wrong: ${err}`));
 
+const PORT = process.env.PORT || 8080;
+
 app.use(express.urlencoded({extended: true, limit: "2mb"}));
 app.use(express.json({limit: "2mb"}));
 
 const io = require("socket.io")(server, {
 	cors: {
-		origin: ["https://chatsyapp-client.herokuapp.com"]
+		origin: ["*"]
 	}
 });
 
