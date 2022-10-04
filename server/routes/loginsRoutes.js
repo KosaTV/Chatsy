@@ -9,7 +9,7 @@ router.post("/sign-up", registerValidationSchema, createUser);
 //* Login a user
 router.post("/login", userLogin);
 
-router.get("/auto-login", userLoginAutomatically);
+router.post("/auto-login", userLoginAutomatically);
 
 //* logout a user
 router.get("/logout", verify, userLogout);

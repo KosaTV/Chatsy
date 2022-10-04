@@ -4,7 +4,6 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
 
 //* --- Controllers ---
 const {verifySocket} = require("./controllers/authenticationControllers");
@@ -20,9 +19,8 @@ const userRouter = require("./routes/userRoutes");
 
 const app = express();
 
-app.use(cors({credentials: true, origin: "https://chatsyapp-client.herokuapp.com"}));
-app.use(cookieParser());
-const mongoDbURI = process.env.DB_URI;
+app.use(cors({credentials: true, origin: process.env.BASE_URL}));
+const mongoDbURI = process.env.DB_OLD_URI;
 
 const server = http.createServer(app);
 
@@ -42,7 +40,7 @@ app.use(express.json({limit: "2mb"}));
 
 const io = require("socket.io")(server, {
 	cors: {
-		origin: ["https://chatsyapp-client.herokuapp.com"]
+		origin: [process.env.BASE_URL]
 	}
 });
 
