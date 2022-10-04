@@ -23,20 +23,17 @@ const generateRefreshToken = user => {
 };
 
 const userLogin = async (req, res) => {
-	console.log("okey");
 	const userExists = await User.findOne({email: req.body.email});
 
 	let passwordCorrect;
 	if (userExists) passwordCorrect = await bcrypt.compare(req.body.password, userExists.password);
 
 	if (passwordCorrect) {
-		console.log("generate token...");
 		const token = generateAccessToken(userExists);
 		const refreshedToken = generateRefreshToken(userExists);
 
 		refreshedTokens.push(refreshedToken);
 		const {password, chatsyToken, ...userData} = userExists._doc;
-		console.log("saving user...");
 
 		const response = {
 			user: userData
@@ -46,7 +43,6 @@ const userLogin = async (req, res) => {
 		try {
 			await userExists.save();
 
-			console.log("sending response");
 			return res
 				.status(200)
 				.cookie("chatsy_token", token, {sameSite: "strict", path: "/", expires: new Date(new Date().getTime + 60000 * 1000), httpOnly: true})
