@@ -23,6 +23,7 @@ const generateRefreshToken = user => {
 };
 
 const userLogin = async (req, res) => {
+	console.log("okey");
 	const userExists = await User.findOne({email: req.body.email});
 
 	let passwordCorrect;
