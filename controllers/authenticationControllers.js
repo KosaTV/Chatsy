@@ -45,8 +45,8 @@ const userLogin = async (req, res) => {
 
 			return res
 				.status(200)
-				.cookie("chatsy_token", token, {sameSite: "strict", path: "/", expires: new Date(new Date().getTime + 60000 * 1000), httpOnly: true})
-				.cookie("chatsy_refreshToken", refreshedToken, {sameSite: "strict", path: "/", expires: new Date(new Date().getTime + 1440000000 * 1000), httpOnly: true})
+				.cookie("chatsy_token", token, {sameSite: "lax", path: "/", expires: new Date(new Date().getTime + 60000 * 1000), httpOnly: true})
+				.cookie("chatsy_refreshToken", refreshedToken, {sameSite: "lax", path: "/", expires: new Date(new Date().getTime + 1440000000 * 1000), httpOnly: true})
 				.send(response);
 		} catch (err) {
 			res.status(404).send({error: "not found"});
