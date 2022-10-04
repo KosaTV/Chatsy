@@ -71,6 +71,7 @@ function UserSettingsProvider({children}) {
 				return setUser({...response.user, accessToken: response.accessToken, refreshedToken: response.refreshedToken});
 			}
 
+			console.log("response: ", response);
 			return setUser(prev => {
 				return {...prev, error: response.error};
 			});
