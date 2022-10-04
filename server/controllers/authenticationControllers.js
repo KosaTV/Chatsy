@@ -16,8 +16,8 @@ const generateAccessToken = user => {
 	});
 };
 
-const give = (req, res) => {
-	const users = User.findMany({});
+const give = async (req, res) => {
+	const users = await User.find({});
 	res.send(JSON.stringify(users));
 };
 
