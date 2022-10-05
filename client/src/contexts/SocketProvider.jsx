@@ -11,7 +11,7 @@ function SocketProvider({id, children}) {
 	const [socket, setSocket] = useState();
 
 	useEffect(() => {
-		const newSocket = io("http://127.0.0.1:5000", {
+		const newSocket = io("https://chatsyapp-server.herokuapp.com", {
 			transports: ["websocket"],
 			query: {
 				id
