@@ -1,0 +1,35 @@
+@use "colors" as c;
+
+.text-placeholder {
+	height: 10px;
+	border-radius: 4px;
+	background: map-get(c.$app-colors, "almostWhite");
+	margin: 1rem 0;
+	animation: placeholder-pulse 4s 1s linear infinite;
+
+	&--medium {
+		border-radius: 8px;
+		height: 21.5px;
+	}
+
+	&--big {
+		border-radius: 8px;
+		height: 30px;
+	}
+
+	@for $i from 1 through 20 {
+		&--#{$i*5} {
+			width: $i * 5vw;
+		}
+	}
+}
+
+.figure-placeholder {
+	@extend .text-placeholder;
+
+	&--medium-circle {
+		border-radius: 50%;
+		width: 55px;
+		height: 55px;
+	}
+}
