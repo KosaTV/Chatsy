@@ -56,7 +56,7 @@ function UserSettingsProvider({children}) {
 		const {body, ...getInfo} = fullInfo;
 		let finallObject = method === "POST" || method === "PUT" || method === "PATCH" ? fullInfo : getInfo;
 
-		const result = await fetch(`https://chatsyapp-server.herokuapp.com${endpoint}`, finallObject);
+		const result = await fetch(`https://chatsy-api-server.herokuapp.com${endpoint}`, finallObject);
 
 		const parsedResult = result.json();
 
