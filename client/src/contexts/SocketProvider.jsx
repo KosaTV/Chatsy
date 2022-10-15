@@ -10,8 +10,6 @@ const useSocket = () => {
 function SocketProvider({id, children}) {
 	const [socket, setSocket] = useState();
 
-	//check API URL
-
 	useEffect(() => {
 		const newSocket = io("https://chatsy-api.herokuapp.com", {
 			transports: ["websocket"],
