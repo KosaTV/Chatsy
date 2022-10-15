@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import io from "socket.io-client";
+import {API_URL} from "../helpers/APISettings";
 
 const SocketContext = React.createContext();
 
@@ -11,7 +12,7 @@ function SocketProvider({id, children}) {
 	const [socket, setSocket] = useState();
 
 	useEffect(() => {
-		const newSocket = io("https://chatsy-api.herokuapp.com", {
+		const newSocket = io(API_URL, {
 			transports: ["websocket"],
 			query: {
 				id

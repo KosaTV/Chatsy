@@ -358,7 +358,7 @@ function SystemContextProvider({children}) {
 	return (
 		<SystemContext.Provider value={{togglePopup, setTogglePopup, setPopupFormInfo, popupFormInfo}}>
 			<ReceivingCallPopup onAcceptButton={e => conversationData.acceptCall()} onRejectButton={e => conversationData.rejectCall()} show={conversationData.caller} />
-			<SendingCallPopup onCancelButton={e => conversationData.cancelVideoCall()} show={conversationData.callMaking || conversationData.startedCalling} />
+			<SendingCallPopup onCancelButton={e => conversationData.cancelVideoCall()} show={conversationData.callMaking} />
 			<VideoChat userSourceRef={conversationData.myCameraVideo} friendSourceRef={conversationData.friendCameraVideo} show={conversationData.recipient} />
 
 			<Popup id="createGroup" open={togglePopup.createGroup} onClose={resetPopupData} toggle={setTogglePopup} title="Create Group">

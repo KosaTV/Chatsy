@@ -170,9 +170,11 @@ function ConversationContextProvider({children}) {
 		});
 		connectionRef.current = peer;
 
+		const userInfo = friends.find(friend => friend._id === userId);
+
 		peer.on("signal", data => {
 			sounds.callingSound.play();
-			setCallMaking(userId);
+			setCallMaking({id: userId, ownName: userInfo.ownName, photoURL: userInfo.photoURL});
 			setStartedCalling(false);
 			socket.emit("call-user", {
 				userToCall: userId,
@@ -250,7 +252,7 @@ function ConversationContextProvider({children}) {
 		});
 		setCallMaking(null);
 		setStartedCalling(false);
-		socket.emit("call-canceled", {to: callMaking});
+		socket.emit("call-canceled", {to: callMaking.id});
 	};
 
 	const rejectCall = () => {

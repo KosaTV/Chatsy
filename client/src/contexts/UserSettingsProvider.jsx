@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import JWTDecode from "jwt-decode";
+import {API_URL} from "../helpers/APISettings";
 
 const UserSettings = React.createContext({});
 
@@ -56,7 +57,7 @@ function UserSettingsProvider({children}) {
 		const {body, ...getInfo} = fullInfo;
 		let finallObject = method === "POST" || method === "PUT" || method === "PATCH" ? fullInfo : getInfo;
 
-		const result = await fetch(`https://chatsy-api.herokuapp.com${endpoint}`, finallObject);
+		const result = await fetch(`${API_URL}${endpoint}`, finallObject);
 
 		const parsedResult = result.json();
 
