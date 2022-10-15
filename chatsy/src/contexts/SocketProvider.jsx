@@ -11,7 +11,7 @@ function SocketProvider({id, children}) {
 	const [socket, setSocket] = useState();
 
 	useEffect(() => {
-		const newSocket = io("https://chatsy-api-server.herokuapp.com", {
+		const newSocket = io("https://chatsy-api.herokuapp.com", {
 			transports: ["websocket"],
 			query: {
 				id
